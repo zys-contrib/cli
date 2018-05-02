@@ -264,18 +264,27 @@
     "stringify-package"
   ],
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-minify": "^0.4.0",
+    "copy-webpack-plugin": "^4.5.1",
     "deep-equal": "~1.0.1",
     "marked": "^0.5.0",
     "marked-man": "~0.2.1",
+    "npm-bundled": "^1.0.5",
     "npm-registry-couchapp": "^2.7.1",
     "npm-registry-mock": "~1.1.0",
     "require-inject": "^1.4.3",
+    "shebang-loader": "0.0.1",
     "sprintf-js": "~1.1.1",
     "standard": "^11.0.1",
     "tacks": "^1.2.7",
-    "tap": "^12.0.1"
+    "tap": "^12.0.1",
+    "webpack": "^4.6.0",
+    "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
+    "bundle": "rm -rf release/* && node scripts/webpack-bundle.js",
+    "dev-bundle": "rm -rf release/* && NODE_ENV=development node scripts/webpack-bundle.js",
     "dumpconf": "env | grep npm | sort | uniq",
     "prepare": "node bin/npm-cli.js --no-audit --no-timing prune --prefix=. --no-global && rimraf test/*/*/node_modules && make -j4 doc",
     "preversion": "bash scripts/update-authors.sh && git add AUTHORS && git commit -m \"update AUTHORS\" || true",
