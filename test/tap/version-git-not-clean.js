@@ -10,7 +10,7 @@ var which = require('which')
 var spawn = require('child_process').spawn
 
 var pkg = common.pkg
-var cache = path.resolve(pkg, 'cache')
+var cache = common.cache
 
 test('npm version <semver> with working directory not clean', function (t) {
   setup()

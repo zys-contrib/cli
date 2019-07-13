@@ -32,7 +32,10 @@ const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 mkdirp.sync(exports.pkg)
 
+const returnCwd = path.dirname(__dirname)
 require('tap').teardown(() => {
+  // work around windows folder locking
+  process.chdir(returnCwd)
   try {
     const isRoot = process.env.getuid && process.env.getuid() === 0
     const isSudo = isRoot && process.env.SUDO_UID
@@ -79,6 +82,7 @@ ourenv.npm_config_metrics = 'false'
 ourenv.npm_config_audit = 'false'
 
 var npm_config_cache = path.resolve(__dirname, 'npm_cache_' + testId)
+exports.cache = npm_config_cache
 ourenv.npm_config_unsafe_perm = 'true'
 ourenv.npm_config_cache = exports.npm_config_cache = npm_config_cache
 ourenv.npm_config_userconfig = exports.npm_config_userconfig = configCommon.userconfig

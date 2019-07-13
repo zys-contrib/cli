@@ -19,7 +19,7 @@ var test = require('tap').test
 var common = require('../common-tap.js')
 
 var pkg = common.pkg
-var cache = path.join(pkg, 'cache')
+var cache = common.cache
 var server
 
 var EXEC_OPTS = { cwd: pkg }

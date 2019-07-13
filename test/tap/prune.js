@@ -11,7 +11,7 @@ var common = require('../common-tap')
 var server
 
 var pkg = common.pkg
-var cache = path.resolve(pkg, 'cache')
+var cache = common.cache
 
 var json = {
   name: 'prune',

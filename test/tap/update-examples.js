@@ -10,7 +10,7 @@ var osenv = require('osenv')
 var requireInject = require('require-inject')
 
 var PKG_DIR = common.pkg
-var CACHE_DIR = path.resolve(PKG_DIR, 'cache')
+var CACHE_DIR = common.cache
 
 // ** constant templates for mocks **
 var DEFAULT_PKG = {

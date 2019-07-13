@@ -11,7 +11,7 @@ var npm = require('../../lib/npm.js')
 
 var pkg = common.pkg
 var packagePath = path.resolve(pkg, 'package.json')
-var cache = path.resolve(pkg, 'cache')
+var cache = common.cache
 
 var json = { name: 'cat', version: '0.1.2' }
 

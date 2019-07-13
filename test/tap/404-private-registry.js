@@ -9,17 +9,7 @@ var server
 var packageName = path.basename(__filename, '.js')
 var testdir = common.pkg
 
-function setup () {
-  cleanup()
-  mkdirp.sync(testdir)
-}
-
-function cleanup () {
-  rimraf.sync(testdir)
-}
-
 test('setup', function (t) {
-  setup()
   mr({port: common.port, throwOnUnmatched: true}, function (err, s) {
     t.ifError(err, 'registry mocked successfully')
     server = s
@@ -32,7 +22,7 @@ test('package names not mangled on error with non-root registry', function (t) {
   common.npm(
     [
       '--registry=' + common.registry,
-      '--cache=' + testdir,
+      '--cache=' + common.cache,
       'cache',
       'add',
       packageName + '@*'
@@ -50,7 +40,5 @@ test('package names not mangled on error with non-root registry', function (t) {
 
 test('cleanup', function (t) {
   server.close()
-  cleanup()
-  t.pass('cleaned up')
   t.end()
 })

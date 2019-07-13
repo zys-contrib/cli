@@ -62,7 +62,7 @@ test('setup', (t) => {
     npm.load({
       loglevel: 'silent',
       registry: common.registry,
-      cache: path.join(testdir, 'cache')
+      cache: common.cache
     }, (err) => {
       if (err) { throw err }
       t.ok(true, 'npm loaded')

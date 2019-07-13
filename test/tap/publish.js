@@ -4,18 +4,14 @@ const BB = require('bluebird')
 
 const common = require('../common-tap')
 const fs = require('fs')
-const mkdirp = require('mkdirp')
 const mr = BB.promisify(require('npm-registry-mock'))
 const path = require('path')
-const rimraf = require('rimraf')
 const test = require('tap').test
 
 const testDir = common.pkg
 
 function setup () {
   cleanup()
-  mkdirp.sync(path.join(testDir, 'cache'))
-
   fs.writeFileSync(
     path.join(testDir, 'package.json'),
     JSON.stringify({
@@ -52,7 +48,7 @@ test('basic npm publish', (t) => {
     return common.npm([
       'publish',
       '--no-color',
-      '--cache', path.join(testDir, 'cache'),
+      '--cache', common.cache,
       '--registry=' + common.registry.replace(common.port, server.port),
       `--//localhost:${server.port}/:username=username`,
       `--//localhost:${server.port}/:_password=` + Buffer.from('password').toString('base64'),
@@ -92,7 +88,7 @@ test('npm publish --dry-run', (t) => {
     'publish',
     '--dry-run',
     '--registry=https://example.registry/fake',
-    '--cache', path.join(testDir, 'cache'),
+    '--cache', common.cache,
     '--loglevel=notice',
     '--no-color'
   ], {'cwd': testDir})
@@ -115,7 +111,7 @@ test('npm publish --json', (t) => {
       'publish',
       '--json',
       '--registry', common.registry.replace(common.port, server.port),
-      '--cache', path.join(testDir, 'cache')
+      '--cache', common.cache
     ], {'cwd': testDir})
       .spread((code, stdout, stderr) => {
         t.comment(stdout)
@@ -142,7 +138,7 @@ test('npm publish --dry-run --json', (t) => {
     '--dry-run',
     '--json',
     '--registry=https://example.registry/fake',
-    '--cache', path.join(testDir, 'cache'),
+    '--cache', common.cache,
     '--loglevel=notice',
     '--no-color'
   ], {'cwd': testDir})
@@ -164,11 +160,6 @@ test('npm publish --dry-run --json', (t) => {
 })
 
 test('cleanup', (t) => {
-  cleanup()
+  process.chdir(__dirname)
   t.end()
 })
-
-function cleanup () {
-  process.chdir(__dirname)
-  rimraf.sync(testDir)
-}

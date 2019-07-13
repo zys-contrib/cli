@@ -10,7 +10,7 @@ var mr = require('npm-registry-mock')
 var osenv = require('osenv')
 
 var PKG_DIR = common.pkg
-var CACHE_DIR = path.resolve(PKG_DIR, 'cache')
+var CACHE_DIR = common.cache
 
 var DEFAULT_PKG = {
   'name': 'examples',

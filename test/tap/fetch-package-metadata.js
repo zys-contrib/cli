@@ -28,7 +28,7 @@ test('setup', function (t) {
   process.chdir(pkg)
 
   var opts = {
-    cache: path.resolve(pkg, 'cache'),
+    cache: common.cache,
     registry: common.registry,
     // important to make sure devDependencies don't get stripped
     dev: true

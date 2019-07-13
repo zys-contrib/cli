@@ -13,7 +13,7 @@ const ms = require('mississippi')
 const _createCacheWriteStream = require('../../lib/search/all-package-metadata.js')._createCacheWriteStream
 
 const PKG_DIR = common.pkg
-const CACHE_DIR = path.resolve(PKG_DIR, 'cache')
+const CACHE_DIR = common.cache
 
 function setup () {
   mkdirp.sync(CACHE_DIR)

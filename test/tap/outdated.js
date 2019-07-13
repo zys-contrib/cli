@@ -11,7 +11,7 @@ var common = require('../common-tap.js')
 
 // config
 var pkg = common.pkg
-var cache = path.resolve(pkg, 'cache')
+var cache = common.cache
 var originalLog
 
 var json = {
@@ -26,9 +26,7 @@ var json = {
 }
 
 test('setup', function (t) {
-  cleanup()
   originalLog = console.log
-  mkdirp.sync(cache)
   fs.writeFileSync(
     path.join(pkg, 'package.json'),
     JSON.stringify(json, null, 2)
@@ -91,7 +89,7 @@ test('it should not throw', function (t) {
   mr({ port: common.port }, function (er, s) {
     npm.load(
       {
-        cache: 'cache',
+        cache: cache,
         loglevel: 'silent',
         parseable: true,
         registry: common.registry
@@ -122,11 +120,6 @@ test('it should not throw', function (t) {
 })
 
 test('cleanup', function (t) {
-  cleanup()
   console.log = originalLog
   t.end()
 })
-
-function cleanup () {
-  rimraf.sync(pkg)
-}

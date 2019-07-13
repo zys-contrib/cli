@@ -9,7 +9,7 @@ var rimraf = require('rimraf')
 var requireInject = require('require-inject')
 
 var pkg = common.pkg
-var cache = path.resolve(pkg, 'cache')
+var cache = common.cache
 var gitDir = path.resolve(pkg, '.git')
 
 test('npm version <semver> in a git repo without the git binary', function (t) {

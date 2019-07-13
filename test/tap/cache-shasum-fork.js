@@ -15,7 +15,7 @@ var forkPath = path.resolve(
   __dirname, '..', 'fixtures', 'forked-underscore-1.5.1.tgz'
 )
 var pkg = common.pkg
-var cache = path.join(pkg, 'cache')
+var cache = common.cache
 var server
 
 test('setup', function (t) {

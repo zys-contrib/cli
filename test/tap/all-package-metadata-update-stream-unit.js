@@ -12,7 +12,7 @@ const mr = require('npm-registry-mock')
 var _createEntryUpdateStream = require('../../lib/search/all-package-metadata.js')._createEntryUpdateStream
 
 var PKG_DIR = common.pkg
-var CACHE_DIR = path.resolve(PKG_DIR, 'cache')
+var CACHE_DIR = common.cache
 
 var server
 

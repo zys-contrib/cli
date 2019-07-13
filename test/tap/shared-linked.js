@@ -126,7 +126,7 @@ test('shared-linked', function (t) {
     })
   }
   var config = [
-    '--cache', path.join(testdir, 'cache'),
+    '--cache', common.cache,
     '--registry', common.registry,
     '--unicode', 'false'
   ]
