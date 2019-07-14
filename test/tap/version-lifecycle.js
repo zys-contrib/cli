@@ -145,16 +145,11 @@ test('npm version <semver> execution order', function (t) {
   })
 })
 
-test('cleanup', function (t) {
-  process.chdir(osenv.tmpdir())
-  rimraf.sync(pkg)
-  t.end()
-})
-
 function setup () {
+  process.chdir(__dirname)
+  rimraf.sync(pkg)
   mkdirp.sync(pkg)
   mkdirp.sync(path.join(pkg, 'node_modules'))
-  mkdirp.sync(cache)
   fs.writeFileSync(npmrc, configContents, 'ascii')
   process.chdir(pkg)
 }

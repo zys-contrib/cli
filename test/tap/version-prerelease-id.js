@@ -14,11 +14,6 @@ var cache = common.cache
 
 var EXEC_OPTS = { cwd: pkg }
 
-test('setup', function (t) {
-  setup()
-  t.end()
-})
-
 test('npm version --preid=rc uses prerelease id', function (t) {
   setup()
 
@@ -32,15 +27,7 @@ test('npm version --preid=rc uses prerelease id', function (t) {
   })
 })
 
-test('cleanup', function (t) {
-  cleanup()
-  t.end()
-})
-
 function setup () {
-  cleanup()
-  mkdirp.sync(pkg)
-  mkdirp.sync(cache)
   var contents = {
     author: 'Daniel Wilches',
     name: 'version-prerelease-id',
@@ -51,11 +38,4 @@ function setup () {
   fs.writeFileSync(path.resolve(pkg, 'package.json'), JSON.stringify(contents), 'utf8')
   fs.writeFileSync(path.resolve(pkg, 'npm-shrinkwrap.json'), JSON.stringify(contents), 'utf8')
   process.chdir(pkg)
-}
-
-function cleanup () {
-  // windows fix for locked files
-  process.chdir(osenv.tmpdir())
-  rimraf.sync(cache)
-  rimraf.sync(pkg)
 }

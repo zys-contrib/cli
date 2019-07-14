@@ -13,15 +13,14 @@ const {File} = Tacks
 
 const _createCacheEntryStream = require('../../lib/search/all-package-metadata.js')._createCacheEntryStream
 
-const PKG_DIR = common.pkg
-const CACHE_DIR = common.cache
-
+// this test uses a fresh cache for each test block
+// create them all in common.cache so that we can verify
+// them for root-owned files in sudotest
+let CACHE_DIR
+let cacheCounter = 1
 function setup () {
+  CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
-}
-
-function cleanup () {
-  rimraf.sync(PKG_DIR)
 }
 
 test('createCacheEntryStream basic', t => {
@@ -53,7 +52,6 @@ test('createCacheEntryStream basic', t => {
         name: 'foo',
         version: '1.0.0'
       }])
-      cleanup()
     })
   })
 })
@@ -68,7 +66,6 @@ test('createCacheEntryStream empty cache', t => {
     err => {
       t.ok(err, 'returned an error because there was no _updated')
       t.match(err.message, /Empty or invalid stream/, 'useful error message')
-      cleanup()
     }
   )
 })
@@ -88,7 +85,6 @@ test('createCacheEntryStream no entry cache', t => {
     t.ok(stream, 'returned a stream')
     return getStream.array(stream).then(results => {
       t.deepEquals(results, [], 'no results')
-      cleanup()
     })
   })
 })
@@ -101,7 +97,6 @@ test('createCacheEntryStream missing cache', t => {
     err => {
       t.ok(err, 'returned an error because there was no cache')
       t.equals(err.code, 'ENOENT', 'useful error message')
-      cleanup()
     }
   )
 })

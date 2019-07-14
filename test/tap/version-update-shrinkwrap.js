@@ -112,6 +112,9 @@ test('npm version <semver> updates shrinkwrap and updates git', function (t) {
 })
 
 function setup () {
+  process.chdir(__dirname)
+  rimraf.sync(pkg)
+  mkdirp.sync(pkg)
   var contents = {
     author: 'Nathan Bowser && Faiq Raza',
     name: 'version-with-shrinkwrap-test',

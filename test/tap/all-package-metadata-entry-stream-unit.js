@@ -14,21 +14,19 @@ const {File} = Tacks
 
 const _createEntryStream = require('../../lib/search/all-package-metadata.js')._createEntryStream
 
-const PKG_DIR = common.pkg
-const CACHE_DIR = common.cache
-
 let server
 
+// this test uses a fresh cache for each test block
+// create them all in common.cache so that we can verify
+// them for root-owned files in sudotest
+let CACHE_DIR
+let cacheCounter = 1
 function setup () {
+  CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
 }
 
-function cleanup () {
-  rimraf.sync(PKG_DIR)
-}
-
 test('setup', t => {
-  cleanup()
   mr({port: common.port, throwOnUnmatched: true}, (err, s) => {
     t.ifError(err, 'registry mocked successfully')
     npm.load({ cache: CACHE_DIR, registry: common.registry }, err => {
@@ -71,7 +69,6 @@ test('createEntryStream full request', t => {
       version: '1.0.0'
     }])
     server.done()
-    cleanup()
   })
 })
 
@@ -106,7 +103,6 @@ test('createEntryStream cache only', function (t) {
       'packages deduped and sorted'
     )
     server.done()
-    cleanup()
   })
 })
 
@@ -156,7 +152,6 @@ test('createEntryStream merged stream', function (t) {
       version: '1.0.0'
     }, 'update stream version wins on dedupe even when the newer one has a lower semver.')
     server.done()
-    cleanup()
   })
 })
 
@@ -177,13 +172,10 @@ test('createEntryStream no sources', function (t) {
     t.match(err.message, /No search sources available/, 'useful error message')
   }).then(() => {
     server.done()
-    cleanup()
   })
 })
 
 test('cleanup', function (t) {
-  cleanup()
   server.close()
-  t.pass('all done')
   t.done()
 })

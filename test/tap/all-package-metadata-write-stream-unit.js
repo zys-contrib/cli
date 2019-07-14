@@ -12,15 +12,14 @@ const ms = require('mississippi')
 
 const _createCacheWriteStream = require('../../lib/search/all-package-metadata.js')._createCacheWriteStream
 
-const PKG_DIR = common.pkg
-const CACHE_DIR = common.cache
-
+// this test uses a fresh cache for each test block
+// create them all in common.cache so that we can verify
+// them for root-owned files in sudotest
+let CACHE_DIR
+let cacheCounter = 1
 function setup () {
+  CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
-}
-
-function cleanup () {
-  rimraf.sync(PKG_DIR)
 }
 
 function fromArray (array) {
@@ -74,7 +73,6 @@ test('createCacheEntryStream basic', function (t) {
         version: '1.0.0'
       }
     }, 'cache contents based on what was written')
-    cleanup()
   })
 })
 
@@ -94,7 +92,6 @@ test('createCacheEntryStream no entries', function (t) {
   }).then(() => {
     const fileData = JSON.parse(fs.readFileSync(cachePath))
     t.ok(fileData, 'cache file exists and has stuff in it')
-    cleanup()
   })
 })
 
@@ -117,6 +114,5 @@ test('createCacheEntryStream missing cache dir', function (t) {
     t.deepEquals(fileData, {
       '_updated': latest
     }, 'cache still contains `_updated`')
-    cleanup()
   })
 })

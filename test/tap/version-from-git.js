@@ -187,20 +187,10 @@ test('npm version from-git without any versions', function (t) {
   }
 })
 
-test('cleanup', function (t) {
-  cleanup()
-  t.end()
-})
-
-function cleanup () {
-  // windows fix for locked files
-  process.chdir(osenv.tmpdir())
-  rimraf.sync(pkg)
-}
-
 function setup () {
-  cleanup()
-  mkdirp.sync(cache)
+  process.chdir(__dirname)
+  rimraf.sync(pkg)
+  mkdirp.sync(pkg)
   process.chdir(pkg)
   fs.writeFileSync(packagePath, JSON.stringify(json), 'utf8')
 }

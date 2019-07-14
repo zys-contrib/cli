@@ -13,7 +13,7 @@ var pkg = common.pkg
 var cache = common.cache
 
 test('npm version <semver> with working directory not clean', function (t) {
-  setup()
+  process.chdir(pkg)
   npm.load({ cache: cache, registry: common.registry, prefix: pkg }, function () {
     which('git', function (err, git) {
       t.ifError(err, 'git found')
@@ -81,17 +81,3 @@ test('npm version <semver> --force with working directory not clean', function (
       t.end()
     })
 })
-
-test('cleanup', function (t) {
-  // windows fix for locked files
-  process.chdir(osenv.tmpdir())
-
-  rimraf.sync(pkg)
-  t.end()
-})
-
-function setup () {
-  mkdirp.sync(pkg)
-  mkdirp.sync(cache)
-  process.chdir(pkg)
-}

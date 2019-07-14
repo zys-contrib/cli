@@ -44,7 +44,6 @@ var optimist = Dir({
 
 var fixture = new Tacks(
   Dir({
-    cache: Dir({}),
     global: Dir({
       lib: Dir({
         node_modules: Dir({

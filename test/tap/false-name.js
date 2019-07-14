@@ -69,17 +69,10 @@ test('not every pkg.name can be required', function (t) {
 
 test('cleanup', function (t) {
   server.close()
-  cleanup()
   t.end()
 })
 
-function cleanup () {
-  rimraf.sync(pkg)
-}
-
 function setup () {
-  cleanup()
-  mkdirp.sync(cache)
   fs.writeFileSync(
     path.join(pkg, 'package.json'),
     JSON.stringify(json, null, 2)

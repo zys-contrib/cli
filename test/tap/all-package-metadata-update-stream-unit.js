@@ -11,17 +11,16 @@ const mr = require('npm-registry-mock')
 
 var _createEntryUpdateStream = require('../../lib/search/all-package-metadata.js')._createEntryUpdateStream
 
-var PKG_DIR = common.pkg
-var CACHE_DIR = common.cache
-
 var server
 
+// this test uses a fresh cache for each test block
+// create them all in common.cache so that we can verify
+// them for root-owned files in sudotest
+let CACHE_DIR
+let cacheCounter = 1
 function setup () {
+  CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
-}
-
-function cleanup () {
-  rimraf.sync(PKG_DIR)
 }
 
 test('setup', function (t) {
@@ -63,7 +62,6 @@ test('createEntryUpdateStream full request', function (t) {
       version: '1.0.0'
     }])
     server.done()
-    cleanup()
   })
 })
 
@@ -94,7 +92,6 @@ test('createEntryUpdateStream partial update', function (t) {
       version: '1.0.0'
     }])
     server.done()
-    cleanup()
   })
 })
 
@@ -127,7 +124,6 @@ test('createEntryUpdateStream authed request', function (t) {
       version: '1.0.0'
     }])
     server.done()
-    cleanup()
   })
 })
 
@@ -147,7 +143,6 @@ test('createEntryUpdateStream bad auth', function (t) {
     t.match(err, /unauthorized/, 'failure message from request used')
   }).then(() => {
     server.done()
-    cleanup()
   })
 })
 
@@ -164,14 +159,11 @@ test('createEntryUpdateStream not stale', function (t) {
     t.notOk(stream, 'no stream returned')
     t.notOk(latest, 'no latest returned')
     server.done()
-    cleanup()
     t.end()
   })
 })
 
 test('cleanup', function (t) {
-  cleanup()
   server.close()
-  t.pass('all done')
   t.done()
 })

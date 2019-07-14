@@ -74,8 +74,6 @@ function mocks (server) {
 }
 
 test('setup', function (t) {
-  cleanup()
-  mkdirp.sync(cachedir)
   mr({ port: common.port, plugin: mocks }, function (er, s) {
     server = s
     t.end()
@@ -160,10 +158,5 @@ test('npm owner rm', function (t) {
 
 test('cleanup', function (t) {
   server.close()
-  cleanup()
   t.end()
 })
-
-function cleanup () {
-  rimraf.sync(basedir)
-}

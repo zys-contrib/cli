@@ -70,23 +70,8 @@ test('npm version <semver> with message config', function (t) {
   })
 })
 
-test('cleanup', function (t) {
-  cleanup()
-  t.end()
-})
-
-function cleanup () {
-  // windows fix for locked files
-  process.chdir(osenv.tmpdir())
-
-  rimraf.sync(pkg)
-}
-
 function setup () {
-  cleanup()
-  mkdirp.sync(cache)
   process.chdir(pkg)
-
   fs.writeFileSync(packagePath, JSON.stringify(json), 'utf8')
   fs.writeFileSync(npmrc, configContents, 'ascii')
 }

@@ -33,16 +33,7 @@ test('npm version <semver> in a git repo without the git binary', function (t) {
   })
 })
 
-test('cleanup', function (t) {
-  process.chdir(osenv.tmpdir())
-
-  rimraf.sync(pkg)
-  t.end()
-})
-
 function setup () {
-  mkdirp.sync(pkg)
-  mkdirp.sync(cache)
   mkdirp.sync(gitDir)
   fs.writeFileSync(path.resolve(pkg, 'package.json'), JSON.stringify({
     author: 'Terin Stock',

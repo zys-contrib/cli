@@ -30,7 +30,6 @@ process.env.npm_config_prefix = prefix
 const fixture = new Tacks(Dir({
   repo: Dir({}),
   prefix: Dir({}),
-  cache: Dir({}),
   deps: Dir({
     parent: Dir({
       'package.json': File({

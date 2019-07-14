@@ -25,12 +25,20 @@ var spawn = require('child_process').spawn
 const spawnSync = require('child_process').spawnSync
 var path = require('path')
 
+// space these out to help prevent collisions
+const testId = 3 * (+process.env.TAP_CHILD_ID || 0)
+
 // provide a working dir unique to each test
 const main = require.main.filename
-exports.pkg = path.resolve(path.dirname(main), path.basename(main, '.js'))
+const testName = path.basename(main, '.js')
+exports.pkg = path.resolve(path.dirname(main), testName)
+var commonCache = path.resolve(__dirname, 'npm_cache_' + testName)
+exports.cache = commonCache
+
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 mkdirp.sync(exports.pkg)
+mkdirp.sync(commonCache)
 
 const returnCwd = path.dirname(__dirname)
 require('tap').teardown(() => {
@@ -53,7 +61,7 @@ require('tap').teardown(() => {
     }
     if (!process.env.NO_TEST_CLEANUP) {
       rimraf.sync(exports.pkg)
-      rimraf.sync(npm_config_cache)
+      rimraf.sync(commonCache)
     }
   } catch (e) {
     if (process.platform !== 'win32') {
@@ -61,9 +69,6 @@ require('tap').teardown(() => {
     }
   }
 })
-
-// space these out to help prevent collisions
-const testId = 3 * (+process.env.TAP_CHILD_ID || 0)
 
 var port = exports.port = 15443 + testId
 exports.registry = 'http://localhost:' + port
@@ -81,10 +86,8 @@ ourenv.npm_config_progress = 'false'
 ourenv.npm_config_metrics = 'false'
 ourenv.npm_config_audit = 'false'
 
-var npm_config_cache = path.resolve(__dirname, 'npm_cache_' + testId)
-exports.cache = npm_config_cache
 ourenv.npm_config_unsafe_perm = 'true'
-ourenv.npm_config_cache = exports.npm_config_cache = npm_config_cache
+ourenv.npm_config_cache = commonCache
 ourenv.npm_config_userconfig = exports.npm_config_userconfig = configCommon.userconfig
 ourenv.npm_config_globalconfig = exports.npm_config_globalconfig = configCommon.globalconfig
 ourenv.npm_config_global_style = 'false'
@@ -118,7 +121,7 @@ exports.npm = function (cmd, opts, cb) {
   opts.env = opts.env || process.env
   if (opts.env._storage) opts.env = Object.assign({}, opts.env._storage)
   if (!opts.env.npm_config_cache) {
-    opts.env.npm_config_cache = npm_config_cache
+    opts.env.npm_config_cache = commonCache
   }
   if (!opts.env.npm_config_unsafe_perm) {
     opts.env.npm_config_unsafe_perm = 'true'

@@ -11,7 +11,6 @@ const test = require('tap').test
 const testDir = common.pkg
 
 function setup () {
-  cleanup()
   fs.writeFileSync(
     path.join(testDir, 'package.json'),
     JSON.stringify({
@@ -157,9 +156,4 @@ test('npm publish --dry-run --json', (t) => {
       }, 'JSON output reflects package contents')
       t.equal(stderr.trim(), '', 'nothing on stderr')
     })
-})
-
-test('cleanup', (t) => {
-  process.chdir(__dirname)
-  t.end()
 })

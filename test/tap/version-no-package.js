@@ -6,13 +6,8 @@ var rimraf = require('rimraf')
 
 var pkg = common.pkg
 
-test('setup', function (t) {
-  setup()
-  t.end()
-})
-
 test('npm version in a prefix with no package.json', function (t) {
-  setup()
+  process.chdir(pkg)
   common.npm(
     ['version', '--json', '--prefix', pkg],
     { cwd: pkg },
@@ -29,15 +24,3 @@ test('npm version in a prefix with no package.json', function (t) {
     }
   )
 })
-
-test('cleanup', function (t) {
-  process.chdir(osenv.tmpdir())
-
-  rimraf.sync(pkg)
-  t.end()
-})
-
-function setup () {
-  mkdirp.sync(pkg)
-  process.chdir(pkg)
-}

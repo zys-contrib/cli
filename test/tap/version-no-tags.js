@@ -50,17 +50,7 @@ test('npm version <semver> without git tag', function (t) {
   })
 })
 
-test('cleanup', function (t) {
-  // windows fix for locked files
-  process.chdir(osenv.tmpdir())
-
-  rimraf.sync(pkg)
-  t.end()
-})
-
 function setup () {
-  mkdirp.sync(pkg)
-  mkdirp.sync(cache)
   fs.writeFileSync(path.resolve(pkg, 'package.json'), JSON.stringify({
     author: 'Evan Lucas',
     name: 'version-no-tags-test',

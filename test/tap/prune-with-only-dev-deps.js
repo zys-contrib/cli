@@ -30,7 +30,6 @@ var EXEC_OPTS = {
 }
 
 test('setup', function (t) {
-  cleanup()
   mkdirp.sync(cache)
   fs.writeFileSync(
     path.join(pkg, 'package.json'),
@@ -113,12 +112,5 @@ test('verify installs', function (t) {
 
 test('cleanup', function (t) {
   server.close()
-  cleanup()
-  t.pass('cleaned up')
   t.end()
 })
-
-function cleanup () {
-  process.chdir(osenv.tmpdir())
-  rimraf.sync(pkg)
-}
