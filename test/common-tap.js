@@ -37,6 +37,8 @@ exports.cache = commonCache
 
 const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
+rimraf.sync(exports.pkg)
+rimraf.sync(commonCache)
 mkdirp.sync(exports.pkg)
 mkdirp.sync(commonCache)
 // if we're in sudo mode, make sure that the cache is not root-owned
