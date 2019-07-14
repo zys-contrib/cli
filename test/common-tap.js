@@ -39,22 +39,29 @@ const mkdirp = require('mkdirp')
 const rimraf = require('rimraf')
 mkdirp.sync(exports.pkg)
 mkdirp.sync(commonCache)
+// if we're in sudo mode, make sure that the cache is not root-owned
+const isRoot = process.getuid && process.getuid() === 0
+const isSudo = isRoot && process.env.SUDO_UID && process.env.SUDO_GID
+if (isSudo) {
+  const sudoUid = +process.env.SUDO_UID
+  const sudoGid = +process.env.SUDO_GID
+  fs.chownSync(commonCache, sudoUid, sudoGid)
+}
 
 const returnCwd = path.dirname(__dirname)
 require('tap').teardown(() => {
   // work around windows folder locking
   process.chdir(returnCwd)
   try {
-    const isRoot = process.env.getuid && process.env.getuid() === 0
-    const isSudo = isRoot && process.env.SUDO_UID
     if (isSudo) {
       // running tests as sudo.  ensure we didn't leave any root-owned
       // files in the cache by mistake.
-      const args = [ npm_config_cache, '-uid', '0' ]
+      const args = [ commonCache, '-uid', '0' ]
       const found = spawnSync('find', args)
       const output = found.stdout.toString()
       if (output.length) {
         const er = new Error('Root-owned files left in cache!')
+        er.test = main
         er.files = output.trim().split('\n')
         throw er
       }
