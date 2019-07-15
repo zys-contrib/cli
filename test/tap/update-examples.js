@@ -84,9 +84,18 @@ function extend (a, b) {
   return a
 }
 
+
+const chownr = require('chownr')
+const fixOwner = (
+  process.getuid && process.getuid() === 0 &&
+  process.env.SUDO_UID && process.env.SUDO_GID
+) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
+  : () => {}
+
 function resetPackage (options) {
   rimraf.sync(CACHE_DIR)
   mkdirp.sync(CACHE_DIR)
+  fixOwner(CACHE_DIR)
 
   installAskedFor = undefined
 

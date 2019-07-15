@@ -24,7 +24,15 @@ let cacheCounter = 1
 function setup () {
   CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
+  fixOwner(CACHE_DIR)
 }
+
+const chownr = require('chownr')
+const fixOwner = (
+  process.getuid && process.getuid() === 0 &&
+  process.env.SUDO_UID && process.env.SUDO_GID
+) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
+  : () => {}
 
 test('setup', t => {
   mr({port: common.port, throwOnUnmatched: true}, (err, s) => {
@@ -85,6 +93,7 @@ test('createEntryStream cache only', function (t) {
     other: { name: 'other', version: '1.0.0' }
   }))
   fixture.create(cachePath)
+  fixOwner(cachePath)
   return _createEntryStream(cachePath, 600, {
     registry: common.registry
   }).then(({
@@ -126,6 +135,7 @@ test('createEntryStream merged stream', function (t) {
     other: { name: 'other', version: '1.0.0' }
   }))
   fixture.create(cachePath)
+  fixOwner(cachePath)
   return _createEntryStream(cachePath, 600, {
     registry: common.registry
   }).then(({

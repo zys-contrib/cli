@@ -18,10 +18,18 @@ const _createCacheEntryStream = require('../../lib/search/all-package-metadata.j
 // them for root-owned files in sudotest
 let CACHE_DIR
 let cacheCounter = 1
+const chownr = require('chownr')
 function setup () {
   CACHE_DIR = common.cache + '/' + cacheCounter++
   mkdirp.sync(CACHE_DIR)
+  fixOwner(CACHE_DIR)
 }
+
+const fixOwner = (
+  process.getuid && process.getuid() === 0 &&
+  process.env.SUDO_UID && process.env.SUDO_GID
+) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
+  : () => {}
 
 test('createCacheEntryStream basic', t => {
   setup()
@@ -38,6 +46,7 @@ test('createCacheEntryStream basic', t => {
     }
   }))
   fixture.create(cachePath)
+  fixOwner(cachePath)
   return _createCacheEntryStream(cachePath, {}).then(({
     updateStream: stream,
     updatedLatest: latest
@@ -61,6 +70,7 @@ test('createCacheEntryStream empty cache', t => {
   const cachePath = path.join(CACHE_DIR, '.cache.json')
   const fixture = new Tacks(File({}))
   fixture.create(cachePath)
+  fixOwner(cachePath)
   return _createCacheEntryStream(cachePath, {}).then(
     () => { throw new Error('should not succeed') },
     err => {
@@ -77,6 +87,7 @@ test('createCacheEntryStream no entry cache', t => {
     '_updated': 1234
   }))
   fixture.create(cachePath)
+  fixOwner(cachePath)
   return _createCacheEntryStream(cachePath, {}).then(({
     updateStream: stream,
     updatedLatest: latest

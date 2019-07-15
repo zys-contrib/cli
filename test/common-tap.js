@@ -63,7 +63,7 @@ require('tap').teardown(() => {
       const output = found.stdout.toString()
       if (output.length) {
         const er = new Error('Root-owned files left in cache!')
-        er.test = main
+        er.testName = main
         er.files = output.trim().split('\n')
         throw er
       }
