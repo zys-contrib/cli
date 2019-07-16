@@ -51,6 +51,7 @@ if (isSudo) {
 }
 
 const returnCwd = path.dirname(__dirname)
+const find = require('which').sync('find')
 require('tap').teardown(() => {
   // work around windows folder locking
   process.chdir(returnCwd)
@@ -59,8 +60,8 @@ require('tap').teardown(() => {
       // running tests as sudo.  ensure we didn't leave any root-owned
       // files in the cache by mistake.
       const args = [ commonCache, '-uid', '0' ]
-      const found = spawnSync('find', args)
-      const output = found.stdout.toString()
+      const found = spawnSync(find, args)
+      const output = found && found.stdout && found.stdout.toString()
       if (output.length) {
         const er = new Error('Root-owned files left in cache!')
         er.testName = main
