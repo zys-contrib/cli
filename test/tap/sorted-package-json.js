@@ -1,14 +1,11 @@
 var test = require('tap').test
 var path = require('path')
-var rimraf = require('rimraf')
-var mkdirp = require('mkdirp')
 var common = require('../common-tap.js')
 var pkg = common.pkg
 var tmp = path.join(pkg, 'tmp')
 var cache = common.cache
 var fs = require('fs')
 var mr = require('npm-registry-mock')
-var osenv = require('osenv')
 var packageJson = path.resolve(pkg, 'package.json')
 
 fs.writeFileSync(packageJson, JSON.stringify({

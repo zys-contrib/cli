@@ -1,8 +1,5 @@
 var mr = require('npm-registry-mock')
 var test = require('tap').test
-var path = require('path')
-var mkdirp = require('mkdirp')
-var rimraf = require('rimraf')
 
 var common = require('../common-tap.js')
 var basedir = common.pkg

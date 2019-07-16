@@ -2,15 +2,11 @@ var common = require('../common-tap.js')
 var fs = require('fs')
 var path = require('path')
 
-var mkdirp = require('mkdirp')
-var osenv = require('osenv')
-var rimraf = require('rimraf')
 var test = require('tap').test
 
 var npm = require('../../lib/npm.js')
 
 var pkg = common.pkg
-var cache = common.cache
 var npmrc = path.resolve(pkg, '.npmrc')
 var packagePath = path.resolve(pkg, 'package.json')
 

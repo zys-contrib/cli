@@ -3,18 +3,14 @@
 const cacheFile = require('npm-cache-filename')
 const mkdirp = require('mkdirp')
 const mr = require('npm-registry-mock')
-const osenv = require('osenv')
 const path = require('path')
 const qs = require('querystring')
-const rimraf = require('rimraf')
 const test = require('tap').test
 
 const Tacks = require('tacks')
 const File = Tacks.File
 
 const common = require('../common-tap.js')
-
-const PKG_DIR = common.pkg
 
 // this test uses a fresh cache for each test block
 // create them all in common.cache so that we can verify
@@ -37,8 +33,6 @@ const fixOwner = (
   process.env.SUDO_UID && process.env.SUDO_GID
 ) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
   : () => {}
-
-
 
 let server
 

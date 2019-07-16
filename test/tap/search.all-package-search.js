@@ -3,10 +3,8 @@
 const cacheFile = require('npm-cache-filename')
 const mkdirp = require('mkdirp')
 const mr = require('npm-registry-mock')
-const osenv = require('osenv')
 const path = require('path')
 const qs = require('querystring')
-const rimraf = require('rimraf')
 const Tacks = require('tacks')
 const test = require('tap').test
 
@@ -14,7 +12,6 @@ const {File} = Tacks
 
 const common = require('../common-tap.js')
 
-const PKG_DIR = common.pkg
 const CACHE_DIR = common.cache
 const cacheBase = cacheFile(CACHE_DIR)(common.registry + '/-/all')
 const cachePath = path.join(cacheBase, '.cache.json')
@@ -24,7 +21,6 @@ const fixOwner = (
   process.env.SUDO_UID && process.env.SUDO_GID
 ) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
   : () => {}
-
 
 let server
 

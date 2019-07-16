@@ -5,7 +5,6 @@ const getStream = require('get-stream')
 const npm = require('../../')
 const test = require('tap').test
 const mkdirp = require('mkdirp')
-const rimraf = require('rimraf')
 const path = require('path')
 const fs = require('fs')
 const ms = require('mississippi')
@@ -29,7 +28,6 @@ const fixOwner = (
   process.env.SUDO_UID && process.env.SUDO_GID
 ) ? (path) => chownr.sync(path, +process.env.SUDO_UID, +process.env.SUDO_GID)
   : () => {}
-
 
 function fromArray (array) {
   var idx = 0

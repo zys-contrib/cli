@@ -1,9 +1,7 @@
 var fs = require('graceful-fs')
 var path = require('path')
 
-var mkdirp = require('mkdirp')
 var mr = require('npm-registry-mock')
-var rimraf = require('rimraf')
 var test = require('tap').test
 
 var npm = require('../../')

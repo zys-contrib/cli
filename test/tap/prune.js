@@ -1,10 +1,7 @@
 var fs = require('fs')
 var path = require('path')
 
-var mkdirp = require('mkdirp')
 var mr = require('npm-registry-mock')
-var osenv = require('osenv')
-var rimraf = require('rimraf')
 var test = require('tap').test
 
 var common = require('../common-tap')

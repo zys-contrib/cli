@@ -6,7 +6,6 @@ const mkdirp = require('mkdirp')
 const mr = require('npm-registry-mock')
 const npm = require('../../')
 const path = require('path')
-const rimraf = require('rimraf')
 const Tacks = require('tacks')
 const test = require('tap').test
 

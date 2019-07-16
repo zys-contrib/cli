@@ -2,7 +2,6 @@ var common = require('../common-tap.js')
 var test = require('tap').test
 var mkdirp = require('mkdirp')
 var rimraf = require('rimraf')
-var path = require('path')
 var mr = require('npm-registry-mock')
 
 var osenv = require('osenv')
@@ -83,7 +82,6 @@ function extend (a, b) {
   }
   return a
 }
-
 
 const chownr = require('chownr')
 const fixOwner = (

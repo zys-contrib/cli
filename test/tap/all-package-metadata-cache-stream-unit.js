@@ -5,7 +5,6 @@ const common = require('../common-tap.js')
 const getStream = require('get-stream')
 const mkdirp = require('mkdirp')
 const path = require('path')
-const rimraf = require('rimraf')
 const Tacks = require('tacks')
 const {test} = require('tap')
 

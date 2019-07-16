@@ -5,8 +5,6 @@ const getStream = require('get-stream')
 const npm = require('../../')
 const test = require('tap').test
 const mkdirp = require('mkdirp')
-const rimraf = require('rimraf')
-const path = require('path')
 const mr = require('npm-registry-mock')
 
 var _createEntryUpdateStream = require('../../lib/search/all-package-metadata.js')._createEntryUpdateStream

@@ -1,16 +1,12 @@
 var fs = require('fs')
 var path = require('path')
 
-var mkdirp = require('mkdirp')
-var osenv = require('osenv')
-var rimraf = require('rimraf')
 var test = require('tap').test
 
 var npm = require('../../')
 var common = require('../common-tap.js')
 
 var pkg = common.pkg
-var cache = common.cache
 
 var EXEC_OPTS = { cwd: pkg }
 

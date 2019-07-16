@@ -11,9 +11,7 @@ var fs = require('graceful-fs')
 var path = require('path')
 var existsSync = fs.existsSync || path.existsSync
 
-var mkdirp = require('mkdirp')
 var mr = require('npm-registry-mock')
-var rimraf = require('rimraf')
 var test = require('tap').test
 
 var common = require('../common-tap.js')

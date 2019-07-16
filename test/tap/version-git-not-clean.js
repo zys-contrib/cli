@@ -1,11 +1,7 @@
 var common = require('../common-tap.js')
 var test = require('tap').test
 var npm = require('../../')
-var osenv = require('osenv')
-var path = require('path')
 var fs = require('fs')
-var rimraf = require('rimraf')
-var mkdirp = require('mkdirp')
 var which = require('which')
 var spawn = require('child_process').spawn
 

@@ -2,7 +2,6 @@ var fs = require('fs')
 var path = require('path')
 
 var test = require('tap').test
-var mkdirp = require('mkdirp')
 var mr = require('npm-registry-mock')
 var common = require('../common-tap')
 var server

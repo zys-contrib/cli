@@ -3,8 +3,6 @@ var common = require('../common-tap.js')
 var mr = common.fakeRegistry.compat
 var server
 
-var testdir = common.pkg
-
 test('setup', function (t) {
   mr({port: common.port, throwOnUnmatched: true}, function (err, s) {
     t.ifError(err, 'registry mocked successfully')
@@ -31,12 +29,8 @@ test('scoped package names not mangled on error with non-root registry', functio
       t.match(stderr, /E404/, 'should notify the sort of error as a 404')
       t.match(stderr, /@scope(?:%2f|\/)foo/, 'should have package name in error')
       server.done()
+      server.close()
       t.end()
     }
   )
-})
-
-test('cleanup', function (t) {
-  server.close()
-  t.end()
 })

@@ -1,11 +1,9 @@
 var common = require('../common-tap.js')
 var test = require('tap').test
 var npm = require('../../')
-var osenv = require('osenv')
 var path = require('path')
 var fs = require('fs')
 var mkdirp = require('mkdirp')
-var rimraf = require('rimraf')
 var requireInject = require('require-inject')
 
 var pkg = common.pkg
