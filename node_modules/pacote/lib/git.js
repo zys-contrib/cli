@@ -23,6 +23,7 @@ const _cloneHosted = Symbol('_cloneHosted')
 const _cloneRepo = Symbol('_cloneRepo')
 const _setResolvedWithSha = Symbol('_setResolvedWithSha')
 const _prepareDir = Symbol('_prepareDir')
+const _annotate = Symbol.for('pacote.Fetcher._annotate')
 
 // get the repository url.  prefer ssh, fall back to git://
 // We have to add the git+ back because npa suppresses it.
@@ -256,12 +257,7 @@ class GitFetcher extends Fetcher {
       ? FileFetcher.prototype.manifest.apply(this)
       : this[_clone](dir =>
           readPackageJson(dir + '/package.json')
-            .then(mani => this.package = {
-              ...mani,
-              _integrity: this.integrity && String(this.integrity),
-              _resolved: this.resolved,
-              _from: this.from,
-            }))
+            .then(mani => this[_annotate](mani)))
   }
 
   packument () {
