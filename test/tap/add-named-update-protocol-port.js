@@ -55,6 +55,7 @@ test('setup', function (t) {
   })
 })
 
+// Will fail until we get rid of figgy-pudding
 test('tarball paths should update port if updating protocol', function (t) {
   server1.get('/registry/' + packageName).reply(200, fooPkg)
   server1.get(
@@ -80,6 +81,7 @@ test('tarball paths should update port if updating protocol', function (t) {
   )
 })
 
+// Will fail until we get rid of figgy-pudding
 test('tarball paths should NOT update if different hostname', function (t) {
   server1.get('/registry/' + iPackageName).reply(200, fooiPkg)
   server2.get(

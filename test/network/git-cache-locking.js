@@ -33,7 +33,7 @@ test('git-cache-locking: install a git dependency', function (t) {
     env: gitEnv
   }, function (err, code, stdout, stderr) {
     if (err) throw err
-    t.equal(0, code, 'npm install should succeed')
+    t.equal(code, 0, 'npm install should succeed')
     t.end()
   })
 })
