@@ -36,7 +36,7 @@ $(version_mandocs): package.json
 
 htmldocs: dev-deps
 	node bin/npm-cli.js rebuild
-	cd docs && node dockhand.js >&2
+	node bin/npm-cli.js run -w docs build
 
 clean: docs-clean gitclean
 
@@ -95,6 +95,7 @@ link: uninstall
 	node bin/npm-cli.js link -f --ignore-scripts
 
 prune:
+	node bin/npm-cli.js run resetdeps
 	node bin/npm-cli.js prune --production --no-save --no-audit
 	@[[ "$(shell git status -s)" != "" ]] && echo "ERR: found unpruned files" && exit 1 || echo "git status is clean"
 

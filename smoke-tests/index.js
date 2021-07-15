@@ -12,8 +12,8 @@ t.cleanSnapshot = s => s.split(cwd).join('{CWD}')
   .split(process.cwd()).join('{CWD}')
   .replace(/\\+/g, '/')
   .replace(/\r\n/g, '\n')
-  .replace(/\ \(in a browser\)/g, '')
-  .replace(/^npm@.*\ /mg, 'npm ')
+  .replace(/ \(in a browser\)/g, '')
+  .replace(/^npm@.* /mg, 'npm ')
 
 // setup server
 const { start, stop, registry } = require('./server.js')
@@ -207,5 +207,37 @@ t.test('npm uninstall', async t => {
   t.matchSnapshot(
     readFile('package-lock.json'),
     'should have expected uninstall lockfile result'
+  )
+})
+
+t.test('npm pkg', async t => {
+  let cmd = `${npmBin} pkg get license`
+  let cmdRes = await exec(cmd)
+  t.matchSnapshot(cmdRes.replace(/in.*s/, ''),
+    'should have expected pkg get output')
+
+  cmd = `${npmBin} pkg set tap[test-env][0]=LC_ALL=sk`
+  cmdRes = await exec(cmd)
+  t.matchSnapshot(cmdRes.replace(/in.*s/, ''),
+    'should have expected pkg set output')
+
+  t.matchSnapshot(
+    readFile('package.json'),
+    'should have expected npm pkg set modified package.json result'
+  )
+
+  cmd = `${npmBin} pkg get`
+  cmdRes = await exec(cmd)
+  t.matchSnapshot(cmdRes.replace(/in.*s/, ''),
+    'should print package.json contents')
+
+  cmd = `${npmBin} pkg delete tap`
+  cmdRes = await exec(cmd)
+  t.matchSnapshot(cmdRes.replace(/in.*s/, ''),
+    'should have expected pkg delete output')
+
+  t.matchSnapshot(
+    readFile('package.json'),
+    'should have expected npm pkg delete modified package.json result'
   )
 })
